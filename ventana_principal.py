@@ -4,7 +4,7 @@ from tkinter import filedialog
 from tkinter import simpledialog
 
 def button1_hover_in(event):
-    button1.config(bg="gray", fg="black")  # Cambia el color del botón 1 a gris
+    button1.config(bg="red", fg="black")  # Cambia el color del botón 1 a gris
     button1.config(cursor="hand2")
 
 def button1_hover_out(event):
