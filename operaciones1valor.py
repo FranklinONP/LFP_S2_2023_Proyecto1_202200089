@@ -1,36 +1,28 @@
-from logicaOperaciones import logicaOperacionesC
-from operatoria1 import operatoria1
 from math import*
-objeto=operatoria1()
+class operaciones1valor():
 
-class operaciones1valor(logicaOperacionesC):
-    def __init__(self,valorIzquierdo,tipoOperacion,fila,columna):
-        super().__init__(fila,columna)
-        self.valorIzquierdo=valorIzquierdo
-        self.tipoOperacion=tipoOperacion
-    
-    def operar(self,arbol):
-        izquierdoTemporal=""
-        numeroTrabajado=None
-        if self.valorIzquierdo!=None:
-           izquierdoTemporal=self.valorIzquierdo.operar(arbol) 
+  OPERACIONES = {
+    "seno": sin, 
+    "coseno": cos,
+    "tangente": tan,
+    "inverso": lambda x: 1/x
+  }
 
-        if self.tipoOperacion.operar(arbol)=="seno":
-            return sin(izquierdoTemporal)
-        elif self.tipoOperacion.operar(arbol)=="coseno":
-            return cos(izquierdoTemporal)
-        elif self.tipoOperacion.operar(arbol)=="tangente":
-            return tan(izquierdoTemporal)  
-            
-        
-            #izquierdoTemporal=self.valorIzquierdo.OperarNumeros(arbol)
-        #if numeroTrabajado==objeto.operar(self.tipoOperacion.OperarNumeros(arbol),izquierdoTemporal):
-        #    return numeroTrabajado
-        else: 
-            return None
-        
-    def getFila(self):
-        return super().getFila()
+  def __init__(self, valor_izquierdo, tipo_operacion, fila, columna):
+    self.valor_izquierdo = valor_izquierdo
+    self.tipo_operacion = tipo_operacion
+    self.fila = fila
+    self.columna = columna
+
+  def operar(self):
+    valor = self.valor_izquierdo.operar() if self.valor_izquierdo else None
     
-    def getColumna(self):
-        return super().getColumna()
+    operacion = self.OPERACIONES.get(self.tipo_operacion.operar())
+    if operacion:
+      return operacion(valor)
+
+  def get_fila(self):
+    return self.fila
+
+  def get_columna(self):   
+    return self.columna

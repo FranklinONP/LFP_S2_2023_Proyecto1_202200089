@@ -1,52 +1,42 @@
-from logicaOperaciones import logicaOperacionesC
 from operatoria2 import operatoria2
 objeto=operatoria2()
 
-class operaciones2valor(logicaOperacionesC):
-    def __init__(self,valorIzquierdo,valorDerecho,tipoOperacion,fila,columna):
-        super().__init__(fila,columna)
+
+#boore la fila y columna juto con sus get
+class operaciones2valor():
+    def __init__(self,valorIzquierdo,valorDerecho,tipoOperacion):
         self.valorIzquierdo=valorIzquierdo
         self.valorDerecho=valorDerecho
         self.tipoOperacion=tipoOperacion
+
         
-    def operar(self, arbol):
+    def operar(self):
         derechoTemporal=""
         izquierdoTemporal=""
         numeroTrabajado=None
         if self.valorIzquierdo!=None:
             #izquierdoTemporalTemporal=self.valorIzquierdo.operar(arbol)
-            izquierdoTemporal=self.valorIzquierdo.operar(arbol)
+            izquierdoTemporal=self.valorIzquierdo.operar()
             
         if self.valorDerecho!=None:
             #derechoTemporalTemporal=self.valorDerecho.operar(arbol)
-            derechoTemporal=self.valorDerecho.operar(arbol)
+            derechoTemporal=self.valorDerecho.operar()
             
-        if self.tipoOperacion.operar(arbol)=="suma":
+        
+        if self.tipoOperacion.operar()=="suma":
             return izquierdoTemporal+derechoTemporal
-        elif self.tipoOperacion.operar(arbol)=="resta":
+        elif self.tipoOperacion.operar()=="resta":
             return izquierdoTemporal-derechoTemporal
-        elif self.tipoOperacion.operar(arbol)=="multiplicacion":
+        elif self.tipoOperacion.operar()=="multiplicacion":
             return izquierdoTemporal*derechoTemporal
-        elif self.tipoOperacion.operar(arbol)=="division":
+        elif self.tipoOperacion.operar()=="division":
             return izquierdoTemporal/derechoTemporal
-        elif self.tipoOperacion.operar(arbol)=="potencia":
+        elif self.tipoOperacion.operar()=="potencia":
             return izquierdoTemporal**derechoTemporal
-        elif self.tipoOperacion.operar(arbol)=="raiz":
+        elif self.tipoOperacion.operar()=="raiz":
             return izquierdoTemporal**(1/derechoTemporal)
-        elif self.tipoOperacion.operar(arbol)=="inverso":
-            return 1/izquierdoTemporal
-        elif self.tipoOperacion.operar(arbol)=="mod":
+        elif self.tipoOperacion.operar()=="mod":
             return izquierdoTemporal%derechoTemporal  
-            
-            
-        #if numeroTrabajado==objeto.operar(self.tipoOperacion.operar(arbol).OperarNumeros,izquierdoTemporal,derechoTemporal):
-            #return numeroTrabajado
+
         else:
             return None
-
-    def getFila(self):
-        return super().getFila
-    
-    def getColumna(self):
-        return super().getColumna
-        

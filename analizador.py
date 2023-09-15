@@ -1,53 +1,27 @@
-entradaJson = '''{ ?
-  {
-        "Operacion":"Resta"
-        "Valor1":6.5
-        "Valor2":3.5
-    }, *
-    {
-        "Operacion":"Multiplicacion"
-        "Valor1":[
-            "Operacion":"Potencia"
-            "Valor1":2
-            "Valor2":[
-        "Operacion":"Raiz"
-        "Valor1":9
-        "Valor2":2
-                ]
-        ]
-        "Valor2": [
-            "Operacion":"Potencia"
-            "Valor1":2
-            "Valor2":[
-                "Operacion":"Raiz"
-                "Valor1":9
-                "Valor2":2
-                ]
-        ] +
-    },
-    {
-        "Operacion":"Suma"
-        "Valor1":[
-        "Operacion":"Seno"
-        "Valor1":90
-        ]
-        "Valor2":5.32
-    }
-}'''
+entradaJson = '''{
+    "operaciones": 
+        { 
+        !
+            "operacion": "suma",
+            "valor1": 4.5,
+            "valor2":[  {
+            "operacion": "inverso",
+            "valor1": 0.2
+        }] 
+        }  
+}
+'''
 from operaciones1valor import*
 from operaciones2valores import*
-from Lexema import*
-from Numero import*
+from LexemaGeneral import*
+import graphviz as gv
+import os
+from webbrowser import open_new as webbrowser
 
-
-
-global num_col
-global num_fila
-global lexemas_captados
-global instrucciones 
-
-global pruba   
+global num_col, num_fila,lexemas_captados,instrucciones,prueba,listaErrores
+ 
 prueba=[]
+listaErrores=[]
 
 instrucciones=[]
 
@@ -57,12 +31,14 @@ num_col=1
 lexemas_captados=[]
 lexema=""
 lexemaNumero=""
+
 def capturar_lexemas(cadena):
     posicion = 0
     global lexema
     global lexemaNumero
     global num_fila
     global num_col
+    global listaErrores
     
     while posicion < len(cadena):
         caracter = cadena[posicion]
@@ -76,10 +52,10 @@ def capturar_lexemas(cadena):
                 posicion+=1
                 caracter=cadena[posicion]
             #aca voy a armar mi lexemca como clases
-            
+
             #aca agrego mi lexema a mi lista 
             prueba.append(lexema.lower())
-            lex=Lexema(lexema.lower(),num_fila,num_col)
+            lex=LexemaGeneral(lexema.lower(),num_fila,num_col)
             lexemas_captados.append(lex)
             posicion+=1
             caracter=cadena[posicion]
@@ -90,7 +66,7 @@ def capturar_lexemas(cadena):
             nuevaL=cadena[posicion-1:]
             numeroEncontrado=capturarNumero(nuevaL)
             #aca voy a armar mi lexemca como clase       
-            numeroAgregar=Numero(numeroEncontrado,num_fila,num_col)
+            numeroAgregar=LexemaGeneral(numeroEncontrado,num_fila,num_col)
             #aca agrego mi lexema a mi lista  
             prueba.append(numeroEncontrado)
             lexemas_captados.append(numeroAgregar)
@@ -99,11 +75,9 @@ def capturar_lexemas(cadena):
            
         elif ord(caracter)==91 or ord(caracter)==93:  #corchetes
             #aca voy a armar mi lexemca como clases
-            caracterToken=Lexema(caracter,num_fila,num_col)
+            caracterToken=LexemaGeneral(caracter,num_fila,num_col)
             #aca agrego mi lexema a mi lista  
             prueba.append(caracter)
-            prueba.append(num_fila)
-            prueba.append(num_col)
             lexemas_captados.append(caracterToken)
             num_col+=1
             
@@ -112,12 +86,41 @@ def capturar_lexemas(cadena):
             num_fila+=1
         elif ord(caracter)==9:#tabulador
             num_col+=4
-        #123,125 llaves, 48=Dos puntos  44=Coma  32=espacio
-        elif ord(caracter)==123 or ord(caracter)==125 or ord(caracter)==58 or ord(caracter)== 44 or ord(caracter)==32:
+        #123,125 llaves, 58=Dos puntos  44=Coma  32=espacio
+        elif ord(caracter)==123 or ord(caracter)==125 or ord(caracter)==58 or  ord(caracter)== 44 or ord(caracter)==32: 
             num_col+=1
         else:
-            #Aca agrego los caracteres que no esten dentro de mis caracteres permitidos, necesito sus fila y columna
+            listaErrores.append(caracter)
+            listaErrores.append("Lexico")
+            listaErrores.append(num_col)
+            listaErrores.append(num_fila)
             num_col+=1
+            
+            
+            
+def es_error(caracter):
+    # Obtener el valor ASCII del carácter
+    ascii_valor = ord(caracter)
+    
+    # Verificar si el carácter no es una letra, número, comilla, llaves, espacio, salto de línea,
+    # corchetes, dos puntos o coma (en términos de valores ASCII)
+    if not ((65 <= ascii_valor <= 90) or  # Letras mayúsculas (A-Z)
+            (97 <= ascii_valor <= 122) or  # Letras minúsculas (a-z)
+            (48 <= ascii_valor <= 57) or  # Números (0-9)
+            ascii_valor == 34 or  # Comilla doble (")
+            ascii_valor == 123 or  # Llave abierta ({)
+            ascii_valor == 125 or  # Llave cerrada (})
+            ascii_valor == 32 or  # Espacio en blanco
+            ascii_valor == 10 or  # Salto de línea (\n)
+            ascii_valor == 9 or   # Tabulación (\t)
+            ascii_valor == 13 or  # Retorno de carro (\r)
+            ascii_valor == 91 or  # Corchete abierto ([)
+            ascii_valor == 93 or  # Corchete cerrado (])
+            ascii_valor == 58 or  # Dos puntos (:)
+            ascii_valor == 44):  # Coma (,)
+        return True  # Es un error
+    else:
+        return False  # No es un error
             
 def capturarNumero(cadena):
     numero = ""
@@ -141,11 +144,10 @@ def capturarNumero(cadena):
 def esNumero(caracter):
     if (ord(caracter)>=48) & (ord(caracter)<=57):
         return True
-           
-for l in lexemas_captados:
-    print(l)
-    
-    
+          
+          
+ #................................................................
+
 def imprimirReporte():
     global lexemas_captados
     global instrucciones
@@ -154,35 +156,27 @@ def imprimirReporte():
     n2=""
     while lexemas_captados:
         lexema=lexemas_captados.pop(0)
-        if lexema.operar(None)=="operacion":
+        if lexema.operar()=="operacion":
+            
             operacionTemporal=lexemas_captados.pop(0)
-        elif lexema.operar(None)=="valor1":
+        elif lexema.operar()=="valor1":
             n1=lexemas_captados.pop(0)
-            if n1.operar(None) == '[':
+            if n1.operar() == '[':
                 n1 = imprimirReporte()
-        elif lexema.operar(None)=="valor2":
+        elif lexema.operar()=="valor2":
             n2=lexemas_captados.pop(0)
-            if n2.operar(None) == '[':
+            if n2.operar() == '[':
                 n2 = imprimirReporte()
             
         if operacionTemporal and n1 and n2:
-            return operaciones2valor( n1, n2, operacionTemporal, f'Inicio: {operacionTemporal.getFila()}:{operacionTemporal.getColumna()}', f'Fin: {n2.getFila()}:{n2.getColumna()}')
+            return operaciones2valor( n1, n2, operacionTemporal)
             
-        if operacionTemporal and n1 and operacionTemporal.operar(None)==('seno'):
-            return operaciones1valor(n1,operacionTemporal,
-                    f'Inicia en: {operacionTemporal.getFila()}:{operacionTemporal.getColumna()}',
-                    f'Termina en:{n1.getFila()}:{n1.getColumna}')
+        if operacionTemporal and n1 and operacionTemporal.operar()==(('seno') or ('coseno') or ('tangente')):
+            return operaciones1valor(n1,operacionTemporal,0,0)
             
-        if operacionTemporal and n1 and operacionTemporal.operar(None)==('coseno'):
-            return operaciones1valor(n1,operacionTemporal,
-                    f'Inicia en: {operacionTemporal.getFila()}:{operacionTemporal.getColumna()}',
-                    f'Termina en:{n1.getFila()}:{n1.getColumna}')
-            
-        if operacionTemporal and n1 and operacionTemporal.operar(None)==('tangente'):
-            return operaciones1valor(n1,operacionTemporal,
-                    f'Inicia en: {operacionTemporal.getFila()}:{operacionTemporal.getColumna()}',
-                    f'Termina en:{n1.getFila()}:{n1.getColumna}')
-            
+        if operacionTemporal and n1 and operacionTemporal.operar()==( ('inverso') ):
+            return operaciones1valor(n1,operacionTemporal,0,0)
+
     return None
 
 def ejecutable():
@@ -194,7 +188,59 @@ def ejecutable():
         else:
             break
     for intruc in instrucciones:
-        print(intruc.operar(None))
+        print(intruc.operar())
         
+global json_string
+  
+def crearJsonErrores():
+        global json_string
+        global listaErrores
+        json_string = "{\n\"errores\":[\n"
+    # Iterar sobre los datos en grupos de 4 (lexema, tipo, columna, fila)
+        for i in range(0, len(listaErrores), 4):
+            lexema = listaErrores[i]
+            tipo = listaErrores[i + 1]
+            columna = listaErrores[i + 2]
+            fila = listaErrores[i + 3]
+            
+            # Agregar un objeto de error al JSON
+            json_string += "{\n"
+            json_string += f"     \"No\": {i // 4 + 1},\n"
+            json_string += "      \"descripcion\": {\n"
+            json_string += f"            \"lexema\": \"{lexema}\",\n"
+            json_string += f"            \"tipo\": \"{tipo}\",\n"
+            json_string += f"            \"columna\": {columna},\n"
+            json_string += f"            \"fila\": {fila}\n"
+            json_string += "}\n"
+            json_string += "},\n"
+
+        # Elimina la coma adicional y cierra los corchetes
+        json_string = json_string[:-2]  # Elimina la última coma y el espacio
+        json_string += "\n]\n}\n"
+
+        # Especifica la ruta del archivo donde deseas guardar el JSON
+        archivo_json = "RESULTADOS_202200089.json"
+
+        # Guarda la cadena JSON en el archivo
+        with open(archivo_json, "w") as archivo:
+            archivo.write(json_string)
+          
+
+ #................................................................
+ #................................................................
+
+
+
+#-----------------------------------------------------------------------------------------------------
+
+#---------------------------------------------------------------------------------------------------------
+
+#---------------------------------------------------------------------------------------------------------
+    
+      
 capturar_lexemas(entradaJson)
 ejecutable()
+crearJsonErrores()
+
+for l in listaErrores:
+    print(l)
