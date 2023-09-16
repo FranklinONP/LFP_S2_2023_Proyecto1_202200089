@@ -3,12 +3,15 @@ entradaJson = '''{
         { 
         !
             "operacion": "suma",
-            "valor1": 4.5,
+            "valor1": [
+            "operacion":"potencia"
+            "Valor1":2
+            "Valor2":3],
             "valor2":[  {
             "operacion": "inverso",
             "valor1": 0.2
         }] 
-        }  
+        }$·$&·$&  
 }
 '''
 from operaciones1valor import*
@@ -18,12 +21,12 @@ import graphviz as gv
 import os
 from webbrowser import open_new as webbrowser
 
-global num_col, num_fila,lexemas_captados,instrucciones,prueba,listaErrores
+global num_col, num_fila,lexemas_captados,objetos_de_Operaciones,prueba,listaErrores
  
 prueba=[]
 listaErrores=[]
 
-instrucciones=[]
+objetos_de_Operaciones=[]
 
 num_fila=1
 num_col=1
@@ -148,50 +151,157 @@ def esNumero(caracter):
           
  #................................................................
 
-def imprimirReporte():
+def operarNodosConRecursividad():
     global lexemas_captados
-    global instrucciones
+    global objetos_de_Operaciones
     operacionTemporal=""
     n1=""
     n2=""
     while lexemas_captados:
         lexema=lexemas_captados.pop(0)
-        if lexema.operar()=="operacion":
+        if lexema.operatoriaConRecursividad()=="operacion":
             
             operacionTemporal=lexemas_captados.pop(0)
-        elif lexema.operar()=="valor1":
+        elif lexema.operatoriaConRecursividad()=="valor1":
             n1=lexemas_captados.pop(0)
-            if n1.operar() == '[':
-                n1 = imprimirReporte()
-        elif lexema.operar()=="valor2":
+            if n1.operatoriaConRecursividad() == '[':
+                n1 = operarNodosConRecursividad()
+        elif lexema.operatoriaConRecursividad()=="valor2":
             n2=lexemas_captados.pop(0)
-            if n2.operar() == '[':
-                n2 = imprimirReporte()
+            if n2.operatoriaConRecursividad() == '[':
+                n2 = operarNodosConRecursividad()
             
         if operacionTemporal and n1 and n2:
             return operaciones2valor( n1, n2, operacionTemporal)
             
-        if operacionTemporal and n1 and operacionTemporal.operar()==(('seno') or ('coseno') or ('tangente')):
-            return operaciones1valor(n1,operacionTemporal,0,0)
-            
-        if operacionTemporal and n1 and operacionTemporal.operar()==( ('inverso') ):
-            return operaciones1valor(n1,operacionTemporal,0,0)
+        if operacionTemporal and n1 and operacionTemporal.operatoriaConRecursividad()==(('seno') or ('coseno') or ('tangente')):
+            return operaciones1valor(n1,operacionTemporal)
+    #Tuve que poner el de inverson solito porque si lo ponia juntos con el seno conse y tangente como que no agarraba  
+        if operacionTemporal and n1 and operacionTemporal.operatoriaConRecursividad()==( ('inverso') ):
+            return operaciones1valor(n1,operacionTemporal)
 
     return None
 
-def ejecutable():
-    global instrucciones
+def extraerResultados():
+    global objetos_de_Operaciones
     while True:
-        operacion=imprimirReporte()
+        operacion=operarNodosConRecursividad()
         if operacion:
-            instrucciones.append(operacion)
+            objetos_de_Operaciones.append(operacion)
         else:
             break
-    for intruc in instrucciones:
-        print(intruc.operar())
+    for intruc in objetos_de_Operaciones:  # cada iteracion lo que traer es un nodo u objeto 
+        print(intruc.operatoriaConRecursividad())
         
-global json_string
+global diccionarioFormas,diccionarioColores
+
+diccionarioFormas={
+        "circulo": "circle",
+    "cuadrado": "square",
+    "rectangulo": "rectangle",
+    "elipse": "ellipse",
+    "diamante": "diamond",
+    "triangulo": "triangle",
+    "paralelogramo": "parallelogram",
+    "trapecio": "trapezium",
+    "hexagono": "hexagon",
+    "octagono": "octagon",
+    "pentaedro": "pentagon"
+}
+
+diccionarioColores={
+    "rojo": "red",
+    "verde": "green",
+    "azul": "blue",
+    "amarillo": "yellow",
+    "naranja": "orange",
+    "purpura": "purple",
+    "rosa": "pink",
+    "marron": "brown",
+    "gris": "gray",
+    "negro": "black",
+    "blanco": "white"
+}
+
+global fondoGrafo,fuenteLetra,formaGrafo
+
+def definirParametrosParaGrafo(colorG, colorL, forma):
+    global diccionarioFormas, diccionarioColores
+
+    formaTemp = diccionarioFormas.get(forma)
+    colorGTemp = diccionarioColores.get(colorG)
+    colorLTemp = diccionarioColores.get(colorL)
+
+    if formaTemp:
+        if colorGTemp and colorLTemp:
+            return colorG, colorL, forma
+        elif colorGTemp:
+            return "Palabra no encontrada en el diccionario de colores", colorLTemp
+        elif colorLTemp:
+            return colorGTemp, "Palabra no encontrada en el diccionario de formas"
+        else:
+            return "Palabra no encontrada en los diccionarios de colores y formas", "Palabra no encontrada en los diccionarios"
+    else:
+        return "Palabra no encontrada en el diccionario de formas", colorGTemp, colorLTemp
+
+global atributosDeGrafo
+atributosDeGrafo=[]
+def atributos():
+    global lexemas_captados
+    ultimas8=lexemas_captados[-8:]
+    atributos=[ultimas8[i] for i in range(len(ultimas8)) if i % 2 != 0]
+    v2,v3,v4=definirParametrosParaGrafo(atributos[1],atributos[2],atributos[3])
+    atributosDeGrafo.append(atributos[0])
+    atributosDeGrafo.append(v2)
+    atributosDeGrafo.append(v3)
+    atributosDeGrafo.append(v4)
+    print(v3)
+    
+def graficar():
+        atributos()
+        print()
+        global objetos_de_Operaciones,atributosDeGrafo
+
+        text = """digraph G {
+                    label=" """+atributosDeGrafo[0]+""""
+                    rankdir="LR"
+                    node[style=filled, color=" """+atributosDeGrafo[1]+"""", fontcolor=" """+atributosDeGrafo[2]+"""", shape="""+atributosDeGrafo[3]+"""]"""
+
+        for i in range(len(objetos_de_Operaciones)):
+            
+            text += unir_nodos_de_graficar(objetos_de_Operaciones[i], i, 0,'')
+            
+
+        text += "\n}"
+        f = open('bb.dot', 'w')
+
+        f.write(text)
+        f.close()
+        os.environ["PATH"] += os.pathsep + 'C:/Program Files/Graphviz/bin'
+        os.system(f'dot -Tpng bb.dot -o Arbol_de_Operaciones.png')
+
+def unir_nodos_de_graficar(self, tipo, numero, codigo, barra):
+        valor = ""
+        if tipo:
+            if tipo.isdigit():
+                valor += f'nodo{numero}{codigo}{barra}[label="{tipo.operacion(None)}"];\n'
+            if type(tipo) == operaciones2valor:
+                valor += f'nodo{numero}{codigo}{barra}[label="{tipo.tipo.lexema}\\n{tipo.operacion(None)}"];\n'
+                valor += self.unir_nodos_de_graficar(tipo.left ,numero, codigo+1, barra+"_left")
+                valor += f'nodo{numero}{codigo}{barra} -> nodo{numero}{codigo+1}{barra}_left;\n'
+                valor += self.unir_nodos_de_graficar(tipo.right,numero, codigo+1, barra+"_right")
+                valor += f'nodo{numero}{codigo}{barra} -> nodo{numero}{codigo+1}{barra}_right;\n'
+            
+            if type(tipo) == operaciones1valor:
+                valor += f'nodo{numero}{codigo}{barra}[label="{tipo.tipo.lexema}\\n{tipo.operacion(None)}"];\n'
+                valor += self.unir_nodos_de_graficar(tipo.left,numero, codigo+1, barra+"_tri")
+                valor += f'nodo{numero}{codigo}{barra} -> nodo{numero}{codigo+1}{barra}_tri;\n'
+        return valor
+
+
+        
   
+global json_string 
 def crearJsonErrores():
         global json_string
         global listaErrores
@@ -235,12 +345,15 @@ def crearJsonErrores():
 
 #---------------------------------------------------------------------------------------------------------
 
+    
 #---------------------------------------------------------------------------------------------------------
     
       
 capturar_lexemas(entradaJson)
-ejecutable()
+extraerResultados()
 crearJsonErrores()
 
-for l in listaErrores:
-    print(l)
+print("----")
+graficar()
+print("----")
+

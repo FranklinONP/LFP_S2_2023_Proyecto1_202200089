@@ -8,6 +8,69 @@
             "columna": 9,
             "fila": 4
 }
+},
+{
+     "No": 2,
+      "descripcion": {
+            "lexema": "$",
+            "tipo": "Lexico",
+            "columna": 10,
+            "fila": 14
+}
+},
+{
+     "No": 3,
+      "descripcion": {
+            "lexema": "·",
+            "tipo": "Lexico",
+            "columna": 11,
+            "fila": 14
+}
+},
+{
+     "No": 4,
+      "descripcion": {
+            "lexema": "$",
+            "tipo": "Lexico",
+            "columna": 12,
+            "fila": 14
+}
+},
+{
+     "No": 5,
+      "descripcion": {
+            "lexema": "&",
+            "tipo": "Lexico",
+            "columna": 13,
+            "fila": 14
+}
+},
+{
+     "No": 6,
+      "descripcion": {
+            "lexema": "·",
+            "tipo": "Lexico",
+            "columna": 14,
+            "fila": 14
+}
+},
+{
+     "No": 7,
+      "descripcion": {
+            "lexema": "$",
+            "tipo": "Lexico",
+            "columna": 15,
+            "fila": 14
+}
+},
+{
+     "No": 8,
+      "descripcion": {
+            "lexema": "&",
+            "tipo": "Lexico",
+            "columna": 16,
+            "fila": 14
+}
 }
 ]
 }

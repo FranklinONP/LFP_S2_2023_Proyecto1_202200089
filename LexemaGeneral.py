@@ -1,4 +1,3 @@
-
 class LexemaGeneral():
 
     def __init__(self, lexemaG, fila, columna):
@@ -6,7 +5,7 @@ class LexemaGeneral():
         self.fila=fila
         self.columna=columna
     
-    def operar(self):
+    def operatoriaConRecursividad(self):
         return self.lexemaG
  
 
@@ -15,4 +14,7 @@ class LexemaGeneral():
     
     def getColumna(self):
         return self.columna
+    
+    def getLexema(self):
+        return self.lexemaG
 

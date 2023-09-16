@@ -10,32 +10,32 @@ class operaciones2valor():
         self.tipoOperacion=tipoOperacion
 
         
-    def operar(self):
+    def operatoriaConRecursividad(self):
         derechoTemporal=""
         izquierdoTemporal=""
         numeroTrabajado=None
         if self.valorIzquierdo!=None:
             #izquierdoTemporalTemporal=self.valorIzquierdo.operar(arbol)
-            izquierdoTemporal=self.valorIzquierdo.operar()
+            izquierdoTemporal=self.valorIzquierdo.operatoriaConRecursividad()
             
         if self.valorDerecho!=None:
-            #derechoTemporalTemporal=self.valorDerecho.operar(arbol)
-            derechoTemporal=self.valorDerecho.operar()
+            #derechoTemporalTemporal=self.valorDerecho.operatoriaConRecursividad(arbol)
+            derechoTemporal=self.valorDerecho.operatoriaConRecursividad()
             
         
-        if self.tipoOperacion.operar()=="suma":
+        if self.tipoOperacion.operatoriaConRecursividad()=="suma":
             return izquierdoTemporal+derechoTemporal
-        elif self.tipoOperacion.operar()=="resta":
+        elif self.tipoOperacion.operatoriaConRecursividad()=="resta":
             return izquierdoTemporal-derechoTemporal
-        elif self.tipoOperacion.operar()=="multiplicacion":
+        elif self.tipoOperacion.operatoriaConRecursividad()=="multiplicacion":
             return izquierdoTemporal*derechoTemporal
-        elif self.tipoOperacion.operar()=="division":
+        elif self.tipoOperacion.operatoriaConRecursividad()=="division":
             return izquierdoTemporal/derechoTemporal
-        elif self.tipoOperacion.operar()=="potencia":
+        elif self.tipoOperacion.operatoriaConRecursividad()=="potencia":
             return izquierdoTemporal**derechoTemporal
-        elif self.tipoOperacion.operar()=="raiz":
+        elif self.tipoOperacion.operatoriaConRecursividad()=="raiz":
             return izquierdoTemporal**(1/derechoTemporal)
-        elif self.tipoOperacion.operar()=="mod":
+        elif self.tipoOperacion.operatoriaConRecursividad()=="mod":
             return izquierdoTemporal%derechoTemporal  
 
         else:
