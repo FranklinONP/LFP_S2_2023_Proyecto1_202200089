@@ -2,6 +2,14 @@ import tkinter as tk
 from tkinter import scrolledtext 
 from tkinter import filedialog
 from tkinter import simpledialog
+import tkinter as tk
+from tkinter import messagebox
+#::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+#:::::::::::::::::::::::::::::::::::::IMPORTACIONES DE CLASES::::::::::::::::::::::::::::::::::::::::::::::
+from analizador import*
+
+#::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+#::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 def button1_hover_in(event):
     button1.config(bg="red", fg="black")  # Cambia el color del botón 1 a gris
@@ -40,16 +48,48 @@ def button4_hover_out(event):
     button4.config(cursor="arrow")
 
 #########
+global cuadro_texto
+global texto_a_analizar
 
 
-def button2_click():#Cuando presiono el boton
+def button2_click():#Boton analizar
+    global texto_a_analizar, objetos_de_Operaciones
+    objetos_de_Operaciones.clear()
     print("B2")
+    texto_a_analizar=""
+    # Obtiene el valor completo del cuadro de texto (Text)
+    texto = cuadro_texto.get("1.0", tk.END)
+    texto_a_analizar=texto
+    capturar_lexemas(texto_a_analizar)
+    extraerResultados()
+ # Reemplaza esto con tu lista
+    texto = "\n".join(map(str,lexemasCaptadosParaMostrar))  # Convierte la lista en una cadena de texto
+    lexemasCaptadosParaMostrar.clear()
+    
+    #Para mostrar los elementos reconocidos perdidos en el enunciado
+    # Crear una nueva ventana para mostrar el cuadro de mensaje con barras de desplazamiento
+    ventana_mensaje = tk.Toplevel()
+    ventana_mensaje.title("Elementos reconocidos||| cada linea es un lexema reconocido")
+    cuadro_texto2 = tk.Text(ventana_mensaje, wrap=tk.WORD)
+    cuadro_texto2.pack(fill=tk.BOTH, expand=True)
+    # Insertar el texto en el widget Text
+    cuadro_texto2.insert(tk.END, texto)
 
-def button3_click():#Cuando presiono el boton
+    
+
+ 
+
+def button3_click():#Boton para los errores
     print("B3")
+    if listaErrores:
+        crearJsonErrores()
+        messagebox.showinfo("El archivo de errores fue creado en el directorio de ester proyecto con exito...")
+    else:
+        messagebox.showinfo("Al parecer el archivo que analizaste no tiene errores")
 
-def button4_click():
+def button4_click():#Para mostrat los diagramas
     print("B4")
+    graficar(objetos_de_Operaciones,atributosDeGrafo)
 
 
 

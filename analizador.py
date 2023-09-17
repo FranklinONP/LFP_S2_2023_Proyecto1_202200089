@@ -1,56 +1,12 @@
-entradaJson = '''{
-    "operaciones": 
-        { 
-        !B
-            "operacion": "suma",
-            "valor1": [
-            "operacion":"potencia"
-            "Valor1":2
-            "Valor2":3],
-            "valor2":[  {
-            "operacion": "inverso",
-            "valor1": 0.2
-        }] 
-        }$·$&·$&
-         { 
-        !B
-            "operacion": "suma",
-            "valor1":5
-            "Valor2":3 
-        }  
- { 
-        !B
-            "operacion": "suma",
-            "valor1": [
-            "operacion":"potencia"
-            "Valor1":2
-            "Valor2":3],
-            "valor2":[  {
-            "operacion": "inverso",
-            "valor1": 0.2
-        }] 
-        }$·$&·$&
-         { 
-        !B
-            "operacion": "suma",
-            "valor1":5
-            "Valor2":3 
-        }
-        "texto"
-        "operaciones"
-        "fondo" "blue"
-        "letra" "white"
-        "forma" "circle"
-        
-}
-'''
+
+
 from PIL import Image
 from operaciones1valor import*
 from operaciones2valores import*
 from LexemaGeneral import*
 import graphviz as gv
 import os
-from webbrowser import open_new as webbrowser
+
 
 global num_col, num_fila,lexemas_captados,objetos_de_Operaciones,prueba,listaErrores,lexemas_ParaGrafo
  
@@ -66,6 +22,8 @@ lexemas_captados=[]
 lexemas_ParaGrafo=[]
 lexema=""
 lexemaNumero=""
+global lexemasCaptadosParaMostrar
+lexemasCaptadosParaMostrar=[]
 
 def capturar_lexemas(cadena):
     posicion = 0
@@ -91,6 +49,7 @@ def capturar_lexemas(cadena):
             #aca agrego mi lexema a mi lista 
             prueba.append(lexema.lower())
             lex=LexemaGeneral(lexema.lower(),num_fila,num_col)
+            agregar_a_lista(lexema)
             lexemas_ParaGrafo.append(lexema.lower())
             lexemas_captados.append(lex)
             posicion+=1
@@ -103,7 +62,8 @@ def capturar_lexemas(cadena):
             numeroEncontrado=capturarNumero(nuevaL)
             #aca voy a armar mi lexemca como clase       
             numeroAgregar=LexemaGeneral(numeroEncontrado,num_fila,num_col)
-            #aca agrego mi lexema a mi lista  
+            #aca agrego mi lexema a mi lista 
+            agregar_a_lista(numeroEncontrado)
             prueba.append(numeroEncontrado)
             lexemas_captados.append(numeroAgregar)
             num_col+=len(str(numeroEncontrado))-1
@@ -113,18 +73,23 @@ def capturar_lexemas(cadena):
             #aca voy a armar mi lexemca como clases
             caracterToken=LexemaGeneral(caracter,num_fila,num_col)
             #aca agrego mi lexema a mi lista  
+            agregar_a_lista(caracter)
             prueba.append(caracter)
             lexemas_captados.append(caracterToken)
             num_col+=1
             
         elif caracter=='\n':#salto de linea
+            agregar_a_lista(caracter)
             num_col=1
             num_fila+=1
         elif ord(caracter)==9:#tabulador
             num_col+=4
+            agregar_a_lista(caracter)
         #123,125 llaves, 58=Dos puntos  44=Coma  32=espacio
         elif ord(caracter)==123 or ord(caracter)==125 or ord(caracter)==58 or  ord(caracter)== 44 or ord(caracter)==32: 
             num_col+=1
+            if ord(caracter)==123 or ord(caracter)==125 or ord(caracter)==44 or ord(caracter)==58 :
+                agregar_a_lista(caracter)
         else:
             listaErrores.append(caracter)
             listaErrores.append("Lexico")
@@ -132,6 +97,10 @@ def capturar_lexemas(cadena):
             listaErrores.append(num_fila)
             num_col+=1
             
+            
+def agregar_a_lista(datos):
+    if datos not in lexemasCaptadosParaMostrar:  # Verificar si el dato ya existe en la lista
+        lexemasCaptadosParaMostrar.append(datos)             
             
             
 def es_error(caracter):
@@ -223,8 +192,8 @@ def extraerResultados():
             objetos_de_Operaciones.append(operacion)
         else:
             break
-    for intruc in objetos_de_Operaciones:  # cada iteracion lo que traer es un nodo u objeto 
-        print(intruc.operatoriaConRecursividad())
+    for objetosOperados in objetos_de_Operaciones:  # cada iteracion lo que traer es un nodo u objeto 
+        print(objetosOperados.operatoriaConRecursividad())
         
 
  #................................................................
@@ -241,69 +210,86 @@ def atributos():
     atributosDeGrafo.append(atributos[2])
     atributosDeGrafo.append(atributos[3])
     print("color de letra", atributosDeGrafo[2])
+
+global diccionario_colores_graphviz,diccionario_formas_graphviz
+diccionario_colores_graphviz = {
+    "white": "white",
+    "black": "black",
+    "gray": "gray",
+    "red": "red",
+    "green": "green",
+    "blue": "blue",
+    "yellow": "yellow",
+    "orange": "orange",
+    "purple": "purple",
+    "pink": "pink",
+    "brown": "brown",
+    "cyan": "cyan",
+    "turquoise": "turquoise",
+    "violet": "violet",
+    "gold": "gold",
+    "orchid": "orchid",
+    "plum": "plum",
+}
+
+diccionario_formas_graphviz = {
+    "rectángulo": "box",
+    "elipse": "ellipse",
+    "círculo": "circle",
+    "rombo": "diamond",
+    "hexágono": "hexagon",
+    "trapezoide": "trapezium",
+    "paralelogramo": "parallelogram",
+    "triple_círculo": "tripleoctagon",
+    "triángulo": "triangle",
+    "octágono": "octagon",
+}
+
+
+
+
+
  
-def graficar():
-        global objetos_de_Operaciones,atributosDeGrafo
-        atributos()
+def graficar(objetos_de_Operaciones, atributosDeGrafo):
+    atributos()
 
-        text = """digraph G {
-                    label=" """+"Arbol de operaciones Franklin Orlando Noj Perez"+""""
-                    rankdir="LR"
-                    node[style=filled, color=" """+atributosDeGrafo[1]+"""", fontcolor=" """+atributosDeGrafo[2]+"""", shape="""+atributosDeGrafo[3]+"""]"""
-
-        for i in range(len(objetos_de_Operaciones)):
-            
-            text +=unir_nodos(objetos_de_Operaciones[i], i, 0,'')
-            
-
-        text += "\n}"
-        f = open('bb.dot', 'w')
-
-        f.write(text)
-        f.close()
-        os.environ["PATH"] += os.pathsep + 'C:/Program Files/Graphviz/bin'
-        os.system(f'dot -Tpng bb.dot -o Grafo_Franklin.png')
-        imagen = Image.open('Grafo_Franklin.png')
-        imagen.show()
-        
-def unir_nodos(tipo, numero, codigo, barra):
+    def unir_nodos_recursivamente(objeto, indice, codigo, espacio):
         valor = ""
-        if tipo:
-
-            if type(tipo) == operaciones2valor:
-                valor += f'nodo{numero}{codigo}{barra}[label="{tipo.tipoOperacion.lexemaG}\\n{tipo.operatoriaConRecursividad()}"];\n'
-                valor +=unir_nodos(tipo.valorIzquierdo ,numero, codigo+1, barra+"_left")
-                valor += f'nodo{numero}{codigo}{barra} -> nodo{numero}{codigo+1}{barra}_left;\n'
-                valor += unir_nodos(tipo.valorDerecho,numero, codigo+1, barra+"_right")
-                valor += f'nodo{numero}{codigo}{barra} -> nodo{numero}{codigo+1}{barra}_right;\n'
-            
-            elif type(tipo) == operaciones1valor:
-                valor += f'nodo{numero}{codigo}{barra}[label="{tipo.tipo_operacion.lexemaG}\\n{tipo.operatoriaConRecursividad()}"];\n'
-                valor += unir_nodos(tipo.valor_izquierdo,numero, codigo+1, barra+"_tri")
-                valor += f'nodo{numero}{codigo}{barra} -> nodo{numero}{codigo+1}{barra}_tri;\n'
+        if objeto:
+            if isinstance(objeto, operaciones2valor):
+                valor += f'nodo{indice}{codigo}{espacio}[label="{objeto.tipoOperacion.lexemaG}\\n{objeto.operatoriaConRecursividad()}"];\n'
+                valor += unir_nodos_recursivamente(objeto.valorIzquierdo, indice, codigo + 1, espacio + "_left")
+                valor += f'nodo{indice}{codigo}{espacio} -> nodo{indice}{codigo+1}{espacio}_left;\n'
+                valor += unir_nodos_recursivamente(objeto.valorDerecho, indice, codigo + 1, espacio + "_right")
+                valor += f'nodo{indice}{codigo}{espacio} -> nodo{indice}{codigo+1}{espacio}_right;\n'
+            elif isinstance(objeto, operaciones1valor):
+                valor += f'nodo{indice}{codigo}{espacio}[label="{objeto.tipo_operacion.lexemaG}\\n{objeto.operatoriaConRecursividad()}"];\n'
+                valor += unir_nodos_recursivamente(objeto.valor_izquierdo, indice, codigo + 1, espacio + "_tri")
+                valor += f'nodo{indice}{codigo}{espacio} -> nodo{indice}{codigo+1}{espacio}_tri;\n'
             else:
-                valor += f'nodo{numero}{codigo}{barra}[label="{tipo.operatoriaConRecursividad()}"];\n'
+                valor += f'nodo{indice}{codigo}{espacio}[label="{objeto.operatoriaConRecursividad()}"];\n'
         return valor
 
+    datosArbol = """digraph G {
+                    label=" """ + "Arbol de operaciones Franklin Orlando Noj Perez" + """"
+                    rankdir="LR"
+                    node[style=filled, color=" """ + atributosDeGrafo[1] + """", fontcolor=" """ + atributosDeGrafo[2] + """", shape=""" + atributosDeGrafo[3] + """, fontsize=20,fontweight="bold"]"""
 
+    for i in range(len(objetos_de_Operaciones)):
+        datosArbol += unir_nodos_recursivamente(objetos_de_Operaciones[i], i, 0, '')
 
+    datosArbol += "\n}"
+    f = open('bb.dot', 'w')
+    f.write(datosArbol)
+    f.close()
+    os.environ["PATH"] += os.pathsep + 'C:/Program Files/Graphviz/bin'
+    os.system(f'dot -Tpng bb.dot -o Grafo_Franklin.png')
+    imagen = Image.open('Grafo_Franklin.png')
+    imagen.show()
 
- #................................................................
- #................................................................
-
-
-
-
-
-
-
-
-
-
-    
-
-
-        
+ #........................................................................................................................................
+ #........................................................................................................................................
+ 
   
 global json_string 
 def crearJsonErrores():
@@ -351,16 +337,3 @@ def crearJsonErrores():
 
     
 #---------------------------------------------------------------------------------------------------------
-    
-      
-capturar_lexemas(entradaJson)
-extraerResultados()
-crearJsonErrores()
-
-for l in lexemas_captados:
-    print(l)
-
-print("----")
-graficar()
-print("----")
-
