@@ -1,7 +1,7 @@
 digraph G {
                     label=" Arbol de operaciones Franklin Orlando Noj Perez"
                     rankdir="LR"
-                    node[style=filled, color=" blue", fontcolor=" black", shape=circle, fontsize=20,fontweight="bold"]nodo00[label="resta\n3.0"];
+                    node[style=filled, color=" green", fontcolor=" black", shape=circle, fontsize=30,fontweight="bold"]nodo00[label="resta\n3.0"];
 nodo01_left[label="6.5"];
 nodo00 -> nodo01_left;
 nodo01_right[label="3.5"];

@@ -3,6 +3,7 @@ from tkinter import scrolledtext
 from tkinter import filedialog
 from tkinter import simpledialog
 import tkinter as tk
+import sys
 from tkinter import messagebox
 #::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 #:::::::::::::::::::::::::::::::::::::IMPORTACIONES DE CLASES::::::::::::::::::::::::::::::::::::::::::::::
@@ -53,13 +54,18 @@ global texto_a_analizar
 
 
 def button2_click():#Boton analizar
-    global texto_a_analizar, objetos_de_Operaciones
+    global texto_a_analizar, objetos_de_Operaciones,num_fila,num_col
     objetos_de_Operaciones.clear()
     print("B2")
     texto_a_analizar=""
     # Obtiene el valor completo del cuadro de texto (Text)
     texto = cuadro_texto.get("1.0", tk.END)
     texto_a_analizar=texto
+    if listaErrores:
+        listaErrores.clear()
+    if atributosDeGrafo:
+        atributosDeGrafo.clear()
+
     capturar_lexemas(texto_a_analizar)
     extraerResultados()
  # Reemplaza esto con tu lista
@@ -74,6 +80,7 @@ def button2_click():#Boton analizar
     cuadro_texto2.pack(fill=tk.BOTH, expand=True)
     # Insertar el texto en el widget Text
     cuadro_texto2.insert(tk.END, texto)
+    reiniciarFilaColumna()
 
     
 
@@ -90,11 +97,6 @@ def button3_click():#Boton para los errores
 def button4_click():#Para mostrat los diagramas
     print("B4")
     graficar(objetos_de_Operaciones,atributosDeGrafo)
-
-
-
-
-
 
 
 def cargar_archivo():
@@ -168,9 +170,16 @@ button3.bind("<Leave>", button3_hover_out)
 button4.bind("<Enter>", button4_hover_in)
 button4.bind("<Leave>", button4_hover_out)
 
+def salir():
+    pass
+    sys.exit()
+
 button1.menu.add_command(label="Cargar Archivo", command=cargar_archivo)
 button1.menu.add_command(label="Guardar Archivo", command=guardar_archivo)
 button1.menu.add_command(label="Guardar Archivo Como...", command=guardar_archivo_como)
+button1.menu.add_command(label="Salir", command=salir)
+
+
 
 button1.bind("<Enter>", button1_hover_in)
 button1.bind("<Leave>", button1_hover_out)

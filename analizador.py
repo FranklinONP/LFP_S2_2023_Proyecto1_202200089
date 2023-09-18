@@ -1,5 +1,3 @@
-
-
 from PIL import Image
 from operaciones1valor import*
 from operaciones2valores import*
@@ -48,7 +46,7 @@ def capturar_lexemas(cadena):
 
             #aca agrego mi lexema a mi lista 
             prueba.append(lexema.lower())
-            lex=LexemaGeneral(lexema.lower(),num_fila,num_col)
+            lex=LexemaGeneral(lexema.lower())
             agregar_a_lista(lexema)
             lexemas_ParaGrafo.append(lexema.lower())
             lexemas_captados.append(lex)
@@ -61,7 +59,7 @@ def capturar_lexemas(cadena):
             nuevaL=cadena[posicion-1:]
             numeroEncontrado=capturarNumero(nuevaL)
             #aca voy a armar mi lexemca como clase       
-            numeroAgregar=LexemaGeneral(numeroEncontrado,num_fila,num_col)
+            numeroAgregar=LexemaGeneral(numeroEncontrado)
             #aca agrego mi lexema a mi lista 
             agregar_a_lista(numeroEncontrado)
             prueba.append(numeroEncontrado)
@@ -71,7 +69,7 @@ def capturar_lexemas(cadena):
            
         elif ord(caracter)==91 or ord(caracter)==93:  #corchetes
             #aca voy a armar mi lexemca como clases
-            caracterToken=LexemaGeneral(caracter,num_fila,num_col)
+            caracterToken=LexemaGeneral(caracter)
             #aca agrego mi lexema a mi lista  
             agregar_a_lista(caracter)
             prueba.append(caracter)
@@ -96,7 +94,11 @@ def capturar_lexemas(cadena):
             listaErrores.append(num_col)
             listaErrores.append(num_fila)
             num_col+=1
-            
+ 
+def reiniciarFilaColumna():
+    global num_col,num_fila
+    num_fila=1
+    num_col=1           
             
 def agregar_a_lista(datos):
     if datos not in lexemasCaptadosParaMostrar:  # Verificar si el dato ya existe en la lista
@@ -157,44 +159,33 @@ def operarNodosConRecursividad():
     global lexemas_captados
     global objetos_de_Operaciones
     operacionTemporal=""
-    n1=""
-    n2=""
+    numeroIzquierda=""
+    numeroDerecha=""
     while lexemas_captados:
         lexema=lexemas_captados.pop(0)
         if lexema.operatoriaConRecursividad()=="operacion":
             
             operacionTemporal=lexemas_captados.pop(0)
         elif lexema.operatoriaConRecursividad()=="valor1":
-            n1=lexemas_captados.pop(0)
-            if n1.operatoriaConRecursividad() == '[':
-                n1 = operarNodosConRecursividad()
+            numeroIzquierda=lexemas_captados.pop(0)
+            if numeroIzquierda.operatoriaConRecursividad() == '[':
+                numeroIzquierda = operarNodosConRecursividad()
         elif lexema.operatoriaConRecursividad()=="valor2":
-            n2=lexemas_captados.pop(0)
-            if n2.operatoriaConRecursividad() == '[':
-                n2 = operarNodosConRecursividad()
+            numeroDerecha=lexemas_captados.pop(0)
+            if numeroDerecha.operatoriaConRecursividad() == '[':
+                numeroDerecha = operarNodosConRecursividad()
             
-        if operacionTemporal and n1 and n2:
-            return operaciones2valor( n1, n2, operacionTemporal)
+        if operacionTemporal and numeroIzquierda and numeroDerecha:
+            return operaciones2valor( numeroIzquierda, numeroDerecha, operacionTemporal)
             
-        if operacionTemporal and n1 and operacionTemporal.operatoriaConRecursividad()==(('seno') or ('coseno') or ('tangente')):
-            return operaciones1valor(n1,operacionTemporal)
-    #Tuve que poner el de inverson solito porque si lo ponia juntos con el seno conse y tangente como que no agarraba  
-        if operacionTemporal and n1 and operacionTemporal.operatoriaConRecursividad()==( ('inverso') ):
-            return operaciones1valor(n1,operacionTemporal)
+        if operacionTemporal and numeroIzquierda and operacionTemporal.operatoriaConRecursividad()==(('seno') or ('coseno') or ('tangente')):
+            return operaciones1valor(numeroIzquierda,operacionTemporal)
+    #Tuve que poner el de inverson solito porque si lo ponia juntos con el seno conse y tangente no lo agarraba 
+        if operacionTemporal and numeroIzquierda and operacionTemporal.operatoriaConRecursividad()==( ('inverso') ):
+            return operaciones1valor(numeroIzquierda,operacionTemporal)
 
     return None
 
-def extraerResultados():
-    global objetos_de_Operaciones
-    while True:
-        operacion=operarNodosConRecursividad()
-        if operacion:
-            objetos_de_Operaciones.append(operacion)
-        else:
-            break
-    for objetosOperados in objetos_de_Operaciones:  # cada iteracion lo que traer es un nodo u objeto 
-        print(objetosOperados.operatoriaConRecursividad())
-        
 
  #................................................................
  #................................................................
@@ -246,6 +237,17 @@ diccionario_formas_graphviz = {
 }
 
 
+def extraerResultados():
+    global objetos_de_Operaciones
+    while True:
+        operacion=operarNodosConRecursividad()
+        if operacion:
+            objetos_de_Operaciones.append(operacion)
+        else:
+            break
+    for objetosOperados in objetos_de_Operaciones:  # cada iteracion lo que traer es un nodo u objeto 
+        print(objetosOperados.operatoriaConRecursividad())
+        
 
 
 
@@ -273,7 +275,7 @@ def graficar(objetos_de_Operaciones, atributosDeGrafo):
     datosArbol = """digraph G {
                     label=" """ + "Arbol de operaciones Franklin Orlando Noj Perez" + """"
                     rankdir="LR"
-                    node[style=filled, color=" """ + atributosDeGrafo[1] + """", fontcolor=" """ + atributosDeGrafo[2] + """", shape=""" + atributosDeGrafo[3] + """, fontsize=20,fontweight="bold"]"""
+                    node[style=filled, color=" """ + atributosDeGrafo[1] + """", fontcolor=" """ + atributosDeGrafo[2] + """", shape=""" + atributosDeGrafo[3] + """, fontsize=30,fontweight="bold"]"""
 
     for i in range(len(objetos_de_Operaciones)):
         datosArbol += unir_nodos_recursivamente(objetos_de_Operaciones[i], i, 0, '')
