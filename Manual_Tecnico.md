@@ -1,5 +1,6 @@
 # Lenguajes Formales y de Programación
-## Práctica 
+# B-
+## Proyecto 1
 ### Segundo Semestre 2023
 ```js
 Universidad San Carlos de Guatemala
@@ -8,15 +9,16 @@ Carne: 202200089
 Correo: master11frank@gmail.com/3110022770701@ingenieria.usac.edu.gt
 ```
 ---
-## Desarrollo de un programa en python que permita gestionar un inventario y movimientos del mismo a partir de archivos de texto.
+## Desarrollo de un analizador lexico, capaz de analizar operaciones aritmeticas y trigonometricas, simples o anidadas.
 
 
 ## Objetivos
 * Objetivo General
-    * Desarrollo de un programa capaz de cargar, leeer y escribir en archivos de texto
+    * Desarrollo de un analizador lexico, el cual tenga una entrada de texto editable para modificar y subir archivos con instrucciones de operaciones matemáticas que pueden ser analizadas y graficadas en forma de árbol binario. 
 * Objetivos Específicos
     * El programa sea amigable con el usuario.
     * Sea liviano para no requerir muchos recursos del ordenador.
+    * Los archivos analizados sean mostrados lo mas simple y entendible posible
 
 ## Caracteristicas del programa
 * Desarrollado en el edito de código fuente Visual Studio version 1.81.1
@@ -25,34 +27,60 @@ Correo: master11frank@gmail.com/3110022770701@ingenieria.usac.edu.gt
 ---
 ## Modulos usados en la práctica
 * import tkinter as tk
+* from tkinter import scrolledtext 
 * from tkinter import filedialog
+* from tkinter import simpledialog
+* import tkinter as tk
+* import sys
 * from tkinter import messagebox
 ---
 ## Capturas de algunas funciones imortantes en el codigo del programa
 <br>
 
-##### Funcion cargar Inventario
-![cargarInventario](https://i.ibb.co/2FYDH8s/cargar-Inventario.jpg)
 
-Esta funcion es la cual se utiliza para subir los archivos de inventario. Examina la lógica que maneja los nombres de productos, cantidades, precios y ubicaciones, y los agrega a la lista si asi corresponde.
+##### Funcion capturar_lexemas
+![cargarMovimientos](https://i.ibb.co/SvbNGys/lexemas1.jpg)
+![cargarMovimientos2](https://i.ibb.co/b36rwSz/lexemas2.jpg)
+
+
+Esta función analiza caracter por caracter, de una cadena de tesxto que se le pasa como parametro, la cadena de texto que esta pensada que recibirá, será todo el texto de un text área, pasa por un proceso de selección, dependiendo del caracter que sea, se ira agregando a la clase de lexema general, la cual servirá para la logica de las operaciones que se deberán hacer, tambien la funcion sirve para recolectar datos para darle formato al grafo, el árbol binario, y para captar todos los caracteres, fuera de los parametros establecidos, es decir los errores lexicos.
 <br>
 <br>
 
-##### Funcion Cargar Movimientos
-![cargarMovimientos](https://i.ibb.co/s3pDsrG/cargar-Movimientos.jpg)
+##### Funcion capturarNumeros
+![archivoSalida](https://i.ibb.co/kJpQwpF/numero.jpg)
 
-Esta función maneja varios tipos de movimientos en el inventario, entre ellos agregar stock y vender productos. Para cada movimiento, verifica si el producto existe en la lista del inventario, si la ubicación es correcta y si la cantidad disponible es suficiente para la operación. Si alguna de estas condiciones no se cumple, muestra un mensaje utilizando messagebox.showinfo (Una función para mostrar ventanas de información en consola).
-<br>
-<br>
-
-##### Funcion Escribir Inventario
-![archivoSalida](https://i.ibb.co/nMMGdmY/archivo-Salida.jpg)
-###### Funcion ---matriz_para_txt()---
-Toma una lista de información de productos. Realiza cálculos con los valores de los productos. Guarda los cálculos y la información en una nueva estructura de datos. Actualiza la lista original con la nueva información.
+La logica de está funcion se centra en poder extraer el numero completo de una cadena de texto, ya sea un numero entero o decimal, y retorna el mismo casteado al tipo de numero que haya encontrado.
 <br>
 
-######  Función ---Imprimir_en_txt(lista, ruta)---
-Toma una lista con información de productos y luego escribe esta información en un archivo de texto en la ruta que se proporcionó.
+##### Funcion crearJsonErroes
+![archivoSalida](https://i.ibb.co/DRBx7Pr/erroes.jpg)
+
+La logica de está funcion esta basada en construir un Json, el cuál llevará los errores LEXICOS encontrados en la cadena de testo, esto están guardados en una lista nativa de python, cada json_string tiene tabulaciones y saltos de linea, para que cuando creé el archivo Json este ya este identado para una mejor comprensión y lectura de los errores.
+<br>
+
+
+##### AFD
+![archivoSalida](https://i.ibb.co/pWhwkrj/AFD.jpg)
+
+AFD
+GRAMATICA {E,N,Inicio,Producciones}
+A={+,-,*,^,/,sqrt(N )}
+T={seno,coseno,tangente,1/n}
+"#={1,2,3,4,5,6,7,8,9}
+E={A,T,#,operaciones}
+N={q0}
+Inicio=q0
+
+Producciones
+q0-->operacionesq1
+q1-->Aq2|Tq3
+q2-->#q2|Aq2|Tq3|e
+q3-->#q3|Tq3|Aq2|e
+
+
+<br>
+
 
 
 

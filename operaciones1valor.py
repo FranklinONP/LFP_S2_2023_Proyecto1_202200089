@@ -19,3 +19,5 @@ class operaciones1valor():
     operacion = self.OPERACIONES.get(self.tipo_operacion.operatoriaConRecursividad())
     if operacion:
       return operacion(valor)
+
+#fdfdf

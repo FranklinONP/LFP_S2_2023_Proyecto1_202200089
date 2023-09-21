@@ -1,4 +1,4 @@
-# Lenguajes Formales y de Programación
+# Lenguajes Formales y de Programación  "B-"
 ## Práctica 
 ### Segundo Semestre 2023
 ```js
@@ -23,36 +23,62 @@ Correo: master11frank@gmail.com/3110022770701@ingenieria.usac.edu.gt
 
 * Desarrollado en Python version 3.11.4
 ---
-## Modulos usados en la práctica
-* import tkinter as tk
-* from tkinter import filedialog
-* from tkinter import messagebox
----
-## Capturas de algunas funciones imortantes en el codigo del programa
+
+## Capturas de la interfaz del programa.
 <br>
 
-##### Funcion cargar Inventario
-![cargarInventario](https://i.ibb.co/2FYDH8s/cargar-Inventario.jpg)
+## Interfaz
+![cargarInventario](https://i.ibb.co/LJCGkLD/interfaz.jpg)
 
-Esta funcion es la cual se utiliza para subir los archivos de inventario. Examina la lógica que maneja los nombres de productos, cantidades, precios y ubicaciones, y los agrega a la lista si asi corresponde.
+La ventana principal que se muestra al iniciar el programa.
 <br>
 <br>
 
-##### Funcion Cargar Movimientos
-![cargarMovimientos](https://i.ibb.co/s3pDsrG/cargar-Movimientos.jpg)
+## Archivo
+![cargarInventario](https://i.ibb.co/P4YLybr/archivo.jpg)
 
-Esta función maneja varios tipos de movimientos en el inventario, entre ellos agregar stock y vender productos. Para cada movimiento, verifica si el producto existe en la lista del inventario, si la ubicación es correcta y si la cantidad disponible es suficiente para la operación. Si alguna de estas condiciones no se cumple, muestra un mensaje utilizando messagebox.showinfo (Una función para mostrar ventanas de información en consola).
+El botón archivo tiene 4 sub-botones.
+Cargar archivo: Sube archivos Json y los muestra para editar en el cuadro de texto.
+Guardar Archivo: Guarda los cambios realizados al Json.
+Guardar Archivo Como: Guarda los cambios y el json con otro nombre.
+Salir: Sale del programa.
 <br>
 <br>
 
-##### Funcion Escribir Inventario
-![archivoSalida](https://i.ibb.co/nMMGdmY/archivo-Salida.jpg)
-###### Funcion ---matriz_para_txt()---
-Toma una lista de información de productos. Realiza cálculos con los valores de los productos. Guarda los cálculos y la información en una nueva estructura de datos. Actualiza la lista original con la nueva información.
+## Cuadro de texto
+![cargarInventario](https://i.ibb.co/JK3HrHX/Screenshot-2023-09-20-232519.jpg)
+
+Forma en la que se muestra el archivo Json en el cuadro de texto del programa.
+<br>
 <br>
 
-######  Función ---Imprimir_en_txt(lista, ruta)---
-Toma una lista con información de productos y luego escribe esta información en un archivo de texto en la ruta que se proporcionó.
+## Encontrados
+![cargarInventario](https://i.ibb.co/DVpBx1P/encontrados.jpg)
+
+Al presionar el botón ANALIZAR
+Muestra los lexemas encontrados en el archivo analizado.
+<br>
+<br>
+
+## Errores
+![cargarInventario](https://i.ibb.co/F4Tnk4B/erroesdddf.jpg)
+
+Al presionar el botón ERRORES
+Si el archivo analizado encuentra erroes lexicos, dará el siguiente mensaje.
+<br>
+<br>
+
+## arbol
+![cargarInventario](https://i.ibb.co/g6fZ9wT/arbolll.jpg)
+
+Al presionar el boton REPORTE
+Forma en la que muestra el arbol de las operaciones realizadas.
+<br>
+<br>
+
+
+
+
 
 
 
