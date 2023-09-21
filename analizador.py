@@ -86,8 +86,7 @@ def capturar_lexemas(cadena):
         #123,125 llaves, 58=Dos puntos  44=Coma  32=espacio
         elif ord(caracter)==123 or ord(caracter)==125 or ord(caracter)==58 or  ord(caracter)== 44 or ord(caracter)==32: 
             num_col+=1
-            if ord(caracter)==123 or ord(caracter)==125 or ord(caracter)==44 or ord(caracter)==58 :
-                agregar_a_lista(caracter)
+            agregar_a_lista(caracter)
         else:
             listaErrores.append(caracter)
             listaErrores.append("Lexico")

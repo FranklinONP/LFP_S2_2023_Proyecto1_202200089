@@ -3,10 +3,19 @@
 {
      "No": 1,
       "descripcion": {
-            "lexema": "#",
+            "lexema": "a",
             "tipo": "Lexico",
-            "columna": 2,
-            "fila": 1
+            "columna": 19,
+            "fila": 10
+}
+},
+{
+     "No": 2,
+      "descripcion": {
+            "lexema": "?",
+            "tipo": "Lexico",
+            "columna": 13,
+            "fila": 16
 }
 }
 ]
