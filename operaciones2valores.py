@@ -22,6 +22,7 @@ class operaciones2valor:
         funcion_operacion = self.OPERACIONES.get(operacion)
 
         if funcion_operacion and izquierdo_temporal is not None and derecho_temporal is not None:
-            return funcion_operacion(izquierdo_temporal, derecho_temporal)
+            resultado = funcion_operacion(izquierdo_temporal, derecho_temporal)
+            return round(resultado, 3)  # Redondear a 3 decimales
         else:
             return None

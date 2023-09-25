@@ -17,7 +17,10 @@ class operaciones1valor():
     valor = self.valor_izquierdo.operatoriaConRecursividad() if self.valor_izquierdo else None
     
     operacion = self.OPERACIONES.get(self.tipo_operacion.operatoriaConRecursividad())
-    if operacion:
-      return operacion(valor)
+    if operacion and valor is not None:
+        resultado = operacion(valor)
+        return round(resultado, 3)  # Redondear a 3 decimales
+    else:
+        return None
 
 #fdfdf

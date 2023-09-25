@@ -3,19 +3,46 @@
 {
      "No": 1,
       "descripcion": {
-            "lexema": "a",
+            "lexema": "?",
             "tipo": "Lexico",
-            "columna": 19,
-            "fila": 10
+            "columna": 3,
+            "fila": 1
 }
 },
 {
      "No": 2,
       "descripcion": {
-            "lexema": "?",
+            "lexema": "*",
             "tipo": "Lexico",
-            "columna": 13,
-            "fila": 16
+            "columna": 8,
+            "fila": 6
+}
+},
+{
+     "No": 3,
+      "descripcion": {
+            "lexema": "^",
+            "tipo": "Lexico",
+            "columna": 38,
+            "fila": 8
+}
+},
+{
+     "No": 4,
+      "descripcion": {
+            "lexema": "+",
+            "tipo": "Lexico",
+            "columna": 11,
+            "fila": 26
+}
+},
+{
+     "No": 5,
+      "descripcion": {
+            "lexema": "@",
+            "tipo": "Lexico",
+            "columna": 5,
+            "fila": 61
 }
 }
 ]

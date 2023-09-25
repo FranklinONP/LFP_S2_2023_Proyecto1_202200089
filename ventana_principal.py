@@ -138,6 +138,18 @@ def guardar_archivo_como():
                     file.write(contenido)
                     print("guardar archivo como")
 
+#.........
+class App(tk.Frame):
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.text_area = tk.Text(self, width=10, height=100, font=("Arial", 10))
+        self.text_area.insert("1.0", "\n".join(str(i) for i in range(1, 50)))  # Insertar líneas numeradas
+        self.text_area.configure(state="disabled")
+        self.text_area.place(x=0, y=80)  # Ubicar el TextArea a 30 píxeles desde la parte superior
+        self.text_area.lift()
+
+#.........
+
 window = tk.Tk()
 window.title("Proyecto 1_Franklin Orlando Noj Pérez_202200089")
 window.config(bg="burlywood")
@@ -145,8 +157,12 @@ window.config(bg="burlywood")
 window.grid_rowconfigure(0, weight=1)
 window.grid_columnconfigure(0, weight=1)
 
+app = App(window)
+app.grid(row=0, column=0, sticky="nsew")
+
+
 button_frame = tk.Frame(window)
-button_frame.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
+button_frame.grid(row=0, column=0, padx=25, pady=10, sticky="nsew")   #gdfdgfgsdfgsdfgsgfsdfgsdrtgdcfsqwrhtrgfdsrthdf
 
 button1 = tk.Menubutton(button_frame, text="Archivo", bg="burlywood1", fg="black", width=10, height=2)
 button1.menu = tk.Menu(button1, tearoff=0)
@@ -188,6 +204,7 @@ button1.grid(row=0, column=0, padx=10, pady=10)
 
 # Crea el área de texto y configura para que se ajuste horizontalmente
 cuadro_texto = scrolledtext.ScrolledText(button_frame, wrap=tk.WORD, width=120, height=30)
-cuadro_texto.grid(row=1, column=0, columnspan=15, padx=10, pady=10, sticky="nsew")
+cuadro_texto.grid(row=1, column=0, columnspan=45, padx=(15, 10), pady=10, sticky="nsew")
+
 
 window.mainloop()
